@@ -34,7 +34,7 @@ if st.button('Show Articles'):
             st.markdown(f"[Read more]({article['sourceURL']})")
             st.metric(label="Topic", value=article['topic_category'])
             st.metric(label="Sentiment", value=article['esg_score'])
-            if st.button(label="Delete Article", key = f"Delete Article {article['id']}"):
-                requests.delete(f"{BASE_URI}/article/delete/{article['id']}")
+            # if st.button(label="Delete Article", key = f"Delete Article {article['id']}"):
+            #     requests.delete(f"{BASE_URI}/article/delete/{article['id']}")
             if st.button(label="Flag for Retraining", key = f"Flag for Retraining {article['id']}"):
                 requests.patch(f"{BASE_URI}/article/flag/{article['id']}")
