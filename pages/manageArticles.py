@@ -2,12 +2,14 @@ import streamlit as st
 import requests
 import json
 import pandas as pd
+from config import BASE_URI
+
 
 st.set_page_config(page_title="Cleaning database", page_icon="📈")
-
+# st.write({BASE_URI})
 
 tuple_companies = []
-response = requests.get("http://127.0.0.1:8000/companies/").json()
+response = requests.get(f"{BASE_URI}/companies/").json()
 for JSONcompany in response :
     tuple_companies.append(JSONcompany['name']) 
 
@@ -24,8 +26,8 @@ company = st.selectbox(
     tuple(tuple_companies))
 
 if st.button('Show Articles'):
-                            #   http://127.0.0.1:8000/articles/byCompany/detailed/Tesla/Period/2010-01-01/2023-02-08
-    response = requests.get(f"http://127.0.0.1:8000/articles/byCompany/detailed/{company}/Period/{start_date}/{end_date}")
+                            #   {BASE_URI}/articles/byCompany/detailed/Tesla/Period/2010-01-01/2023-02-08
+    response = requests.get(f"{BASE_URI}/articles/byCompany/detailed/{company}/Period/{start_date}/{end_date}")
     
     for article in response.json():
         with st.expander(label = f"{article['id']} : {article['date']} | {article['title']})"):
@@ -33,6 +35,6 @@ if st.button('Show Articles'):
             st.metric(label="Topic", value=article['topic_category'])
             st.metric(label="Sentiment", value=article['esg_score'])
             if st.button(label="Delete Article", key = f"Delete Article {article['id']}"):
-                requests.delete(f"http://127.0.0.1:8000/article/delete/{article['id']}")
+                requests.delete(f"{BASE_URI}/article/delete/{article['id']}")
             if st.button(label="Flag for Retraining", key = f"Flag for Retraining {article['id']}"):
-                requests.patch(f"http://127.0.0.1:8000/article/flag/{article['id']}")
+                requests.patch(f"{BASE_URI}/article/flag/{article['id']}")
