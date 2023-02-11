@@ -29,5 +29,5 @@ company = st.selectbox(
 if st.button('Plot'):
     response_plot = requests.get(f"{BASE_URI}/articles/byCompany/{company}/Period/{start_date}/{end_date}")
     df = pd.DataFrame(response_plot.json())
-    
+    st.dataframe(df)
     
